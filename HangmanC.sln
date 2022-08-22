@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HangmanC", "HangmanC\HangmanC.vcxproj", "{933D72E8-EA88-40EB-911C-F8309A6CE672}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Debug|x64.ActiveCfg = Debug|x64
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Debug|x64.Build.0 = Debug|x64
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Debug|x86.ActiveCfg = Debug|Win32
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Debug|x86.Build.0 = Debug|Win32
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Release|x64.ActiveCfg = Release|x64
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Release|x64.Build.0 = Release|x64
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Release|x86.ActiveCfg = Release|Win32
+		{933D72E8-EA88-40EB-911C-F8309A6CE672}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AF07E03-0F97-4897-A972-6E0B2F168E47}
+	EndGlobalSection
+EndGlobal

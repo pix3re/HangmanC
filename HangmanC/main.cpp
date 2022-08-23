@@ -9,11 +9,13 @@ bool confirAction(const std::string &pQuestion);
 void displayProlog();
 void initGameVariables();
 void displayMaskedWord();
+int setAllowedGuesses();
 void revealCorrectLetters(const char pLetter);
 void playerGuess();
 void checkGameState();
-void playerWin();
-void playerLose();
+void playAgain();
+void playerState(bool pWon);
+void displayEndProgram();
 void clearScreen();
 
 const std::vector<std::string> gWordDict = { "hangman", "orange", "battleship", "congratulation", "imagination", "advertisement"};
@@ -21,6 +23,7 @@ std::vector<char> gLettersGuessed;
 std::string gWordToGuess;
 std::string gMaskedWord;
 bool vRunGameLogic = false;
+bool vRunProgram = true;
 int gGuessesMade = 0;
 int gGuessesAllowed = 9;
 
@@ -29,28 +32,43 @@ int main()
 	displayProlog();
 	vRunGameLogic = confirAction("Are you ready to play?");
 
-	initGameVariables();
-
-	while (vRunGameLogic)
+	while (vRunProgram)
 	{
-		clearScreen();
-		displayMaskedWord();
-		playerGuess();
-		checkGameState();
+		initGameVariables();
+		
+		while (vRunGameLogic)
+		{
+			clearScreen();
+			displayMaskedWord();
+			playerGuess();
+			checkGameState();
+		}
+
+		playAgain();
 	}
 
+	displayEndProgram();
+
 	return 0;
+}
+
+void playAgain()
+{
+	bool pPlayAgain = confirAction("Do you want to play again?");
+
+	if (!pPlayAgain)
+		vRunProgram = false;
 }
 
 void checkGameState()
 {
 	if (gMaskedWord == gWordToGuess)
 	{
-		playerWin();
+		playerState(true);
 	}
 	else if (gGuessesMade >= gGuessesAllowed)
 	{
-		playerLose();
+		playerState(false);
 	}
 }
 
@@ -80,7 +98,7 @@ void playerGuess()
 
 void revealCorrectLetters(const char pLetter)
 {
-	for (int i = 0; i < gMaskedWord.length(); i++)
+	for (size_t i = 0; i < gMaskedWord.size(); i++)
 	{
 		if (gWordToGuess[i] == pLetter)
 		{
@@ -92,7 +110,7 @@ void revealCorrectLetters(const char pLetter)
 void displayMaskedWord()
 {
 	std::cout << gMaskedWord << std::endl;
-	std::cout << "You have left " << gGuessesAllowed - gGuessesMade << " guesses, be vise about them!" << std::endl;
+	std::cout << "You have left " << (gGuessesAllowed - gGuessesMade) << " guesses, be vise about them!" << std::endl;
 	for (char letter : gLettersGuessed)
 	{
 		std::cout << letter << " ";
@@ -103,37 +121,66 @@ void displayMaskedWord()
 void initGameVariables()
 {
 	std::srand(std::time(0));
-	int randWordIndex = std::rand() % gWordDict.size() + 1;
+	int randWordIndex = std::rand() % gWordDict.size();
+	std::cout << randWordIndex << std::endl;
+
+	gLettersGuessed.clear();
 
 	gWordToGuess = gWordDict[randWordIndex];
 	gMaskedWord.assign(gWordToGuess.size(), '-');
 	
-	gGuessesAllowed = gWordToGuess.size() + 2;
+	gGuessesAllowed = setAllowedGuesses();
+	gGuessesMade = 0;
+
+	vRunGameLogic = true;
+}
+
+int setAllowedGuesses()
+{
+	std::vector<char> temp;
+	for (size_t i = 0; i < gWordToGuess.size(); i++)
+	{
+		if (!std::count(temp.begin(), temp.end(), gWordToGuess[i]))
+		{
+			temp.push_back(gWordToGuess[i]);
+		}
+	}
+
+	return temp.size() + 2;
 }
 
 void displayProlog()
 {
 	std::cout << "Welcom to Hangman! Prepare to spend some time on guessing secret words!" << std::endl;
 	std::cout << "Brace your self and good luck in the game!! Don't leave hanging there!\n" << std::endl;
+	std::cout << std::endl;
 }
 
-void playerWin()
+void displayEndProgram()
+{
+	std::cout << "Thank you for playing. See you next time!" << std::endl;
+}
+
+void playerState(bool pWon)
 {
 	vRunGameLogic = false;
 	clearScreen();
-	std::cout << "CONGRATULATION !!!! You WON!!!" << std::endl;
-	std::cout << "Secret word was - " << gWordToGuess << std::endl;
-	std::cout << "You managed to guess this word only in " << gGuessesMade << std::endl;
-}
 
-void playerLose()
-{
-	vRunGameLogic = false;
-	clearScreen();
-	std::cout << "HAHAHA you FAILED!!" << std::endl;
-	std::cout << "Secret word was - " << gWordToGuess << std::endl;
-	std::cout << "You managed to get " << gMaskedWord << std::endl;
-	std::cout << "Better luck next time..." << std::endl;
+	if (pWon)
+	{
+		std::cout << "CONGRATULATIONs !!!! You WON!!!" << std::endl;
+		std::cout << "Secret word was - " << gWordToGuess << std::endl;
+		std::cout << "You managed to guess this word only in " << gGuessesMade << " guesses!" << std::endl;
+		std::cout << std::endl;
+	}
+	else
+	{
+		std::cout << "HAHAHA you FAILED!!" << std::endl;
+		std::cout << "Secret word was - " << gWordToGuess << std::endl;
+		std::cout << "You managed to get " << gMaskedWord << std::endl;
+		std::cout << "Better luck next time..." << std::endl;
+		std::cout << std::endl;
+	}
 }
 
 bool confirAction(const std::string &pQuestion)
